@@ -16,9 +16,7 @@ const linkStyle = "w-full text-center p-2 hover:bg-green-900 duration-500";
 
 const MenuRouter = () => {
 
-  const {
-    setBooks,
-  } = useContext(BooksContext)
+  const { setBooks } = useContext(BooksContext)
 
   return (
     <div className='w-11/12 bg-white rounded-xl shadow-2xl'>
@@ -27,7 +25,7 @@ const MenuRouter = () => {
           OpenBook
         </h1>
       </div>
-
+    
       <Router>
 
         <nav className="flex bg-black text-white items-center justify-center">
@@ -39,9 +37,10 @@ const MenuRouter = () => {
             Inicio
           </Link>
           <Link to="/categories" className={linkStyle}>Categorías</Link>
+          <Link to="/publish" className={linkStyle}>Publicar</Link>
           {/* <Link to="/support" className={linkStyle}>Support</Link> */}
         </nav>
-
+    
         <div>
           <Switch>
             <Route exact path="/" component={Inicio} />

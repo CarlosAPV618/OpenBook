@@ -26,8 +26,8 @@ const BooksProvider = ({children}) => {
                 setState(state => ({...state, loading: true}))
                 const {data} = await axios.get(
                     state.coleccion && state.categoria ? 
-                    `${process.env.REACT_APP_BASE_API}/books/${state.coleccion}/${state.categoria}?page=${state.page}&limit=15`
-                    : `${process.env.REACT_APP_BASE_API}/books?page=${state.page}&limit=15` 
+                    `https://openbook-public.herokuapp.com/api/books/${state.coleccion}/${state.categoria}?page=${state.page}&limit=16`
+                    : `https://openbook-public.herokuapp.com/api/books?page=${state.page}&limit=16`
                 )
 
                 setState(state => ({
@@ -52,7 +52,7 @@ const BooksProvider = ({children}) => {
     useEffect(() => {
         const request = async () => {
             try {
-                const { data } = await axios.get(`${process.env.REACT_APP_BASE_API}/categories`)    
+                const { data } = await axios.get(`https://openbook-public.herokuapp.com/api/categories`)    
                 setState(state => ({ ...state, categories: data.categories }))
             } catch (error) {
                 setState(state => ({

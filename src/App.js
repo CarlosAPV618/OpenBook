@@ -6,7 +6,7 @@ const App = () => {
   return (
     <BooksProvider>
 
-      <div className='flex justify-center bg-gray-900 p-5 min-h-screen'>
+      <div className='flex justify-center h-full p-5 min-h-screen'>
         <MenuRouter />
       </div>
       
