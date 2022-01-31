@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react'
 import BooksContext from '../context/BooksContext'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom';
+import { API_URL } from '../constants';
 
 const inputStyle = 'border shadow-md rounded md:w-10/12 h-8 m-2 focus:outline-none p-2'
 
 const PublicarLibro = () => {
 
+    const history = useHistory()
+
     const {categories, setPage} = useContext(BooksContext)
-    const [token, setToken] = useState('')
     const [error, setError] = useState('')
     const [img, setImg] = useState(null)
     const [formData, setFormData] = useState({
@@ -15,7 +18,8 @@ const PublicarLibro = () => {
         author: '',
         description: '',
         categorias: [],
-        link: ''
+        link: '',
+        token: ''
     })
     
     const handleChange = e => setFormData({...formData, [e.target.name]: e.target.value })
@@ -32,7 +36,7 @@ const PublicarLibro = () => {
     const handleSubmit = async e => {
         e.preventDefault()
 
-        if (token !== '@13Ad'){
+        if (formData.token !== process.env.REACT_APP_TOKEN){
             setError('El token no es válido')
             setTimeout(() => setError(''), 3000)
             return
@@ -53,14 +57,15 @@ const PublicarLibro = () => {
                 return
             }
         }
-
         const book = new FormData()
         book.append('bookImg', img)
         Object.keys(formData).forEach(key => book.append(key, formData[key]))
 
         try {
-            await axios.post('https://openbook-public.herokuapp.com/api/books', book)
-            setPage(0); setPage(1)
+            await axios.post(API_URL + '/books', book)
+            setPage(0)
+            setPage(1)
+            history.push('/')
         } catch (error) {
             console.log(error.response.data)
         }
@@ -98,7 +103,7 @@ const PublicarLibro = () => {
                     className='justify-center md:mx-20 p-5 md:w-1/2'
                     onSubmit={handleSubmit}
                 >
-                        <label className='block ml-2'>Titulo del libro</label>
+                        <label className='block ml-2'>Título del libro</label>
                         <input 
                             className={inputStyle}
                             onChange={handleChange}
@@ -114,7 +119,7 @@ const PublicarLibro = () => {
                             name='author'
                         />
            
-                        <label className='block ml-2'>Agrega una breve descripcion</label>
+                        <label className='block ml-2'>Agrega una breve descripción</label>
                         <textarea 
                             className={inputStyle+' h-32'}
                             onChange={handleChange}
@@ -123,7 +128,7 @@ const PublicarLibro = () => {
                         >
                         </textarea>
            
-                        <p className='block ml-2'>Selecciona la categoria <span className='font-light'>(Puedes elegir varias)</span></p>
+                        <p className='block ml-2'>Selecciona la categoría <span className='font-light'>(Puedes elegir varias)</span></p>
                         <div className='md:p-4 ml-1 flex flex-wrap items-center'>
                             {categories.map(collection => (
                                  collection.categorias.map((cat) => (
@@ -161,13 +166,14 @@ const PublicarLibro = () => {
                             name='link'
                         />
            
-                        <label className='block ml-2'>Token de autenticacion</label>
+                        <label className='block ml-2'>Token de autenticación</label>
                         <input 
                             className={inputStyle}
-                            onChange={e => setToken(e.target.value)}
-                            value={token}
+                            onChange={handleChange}
+                            value={formData.token}
                             type='password'
-                            autoComplete='on'
+                            name='token'
+                            autoComplete='f'
                         />
            
                         <div className='w-full mt-3 md:w-10/12 flex justify-end'>

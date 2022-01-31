@@ -8,7 +8,7 @@ const Book = ({book}) => {
     return (
             <div 
                 onClick={() => selectBook(book.uid)}
-                className='w-56 h-80 md:mx-4 sm:mx-2 lg:mx-4 md:mb-8 rounded border border-black cursor-pointer mb-4'
+                className='w-56 h-80 mb-2 rounded border border-black cursor-pointer'
             >
                 <div className='text-white hover:bg-green-900 duration-500 bg-black h-14 max-h-14 flex items-center justify-center px-3 py-1'>
                     <p className='text-center'>

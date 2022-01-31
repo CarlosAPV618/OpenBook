@@ -13,7 +13,7 @@ const Categorias = () => {
         <div className='py-8 md:px-32 px-4 flex justify-center items-center'>
             <ThemeProvider theme={theme}>
                 <div className={classes.root}>
-                    {categories.map(collection => (
+                    {categories?.map(collection => (
                         <Acordeon 
                             key={collection._id}
                             collection={collection}

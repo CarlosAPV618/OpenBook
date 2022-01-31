@@ -1,30 +1,44 @@
 import { useContext, useEffect, useState } from "react"
 import BooksContext from "../context/BooksContext"
 
-const usePagination = (totalPages) => {
+const usePagination = () => {
+    const { currentPagination, pagination, page, totalPages } = useContext(BooksContext)
 
-    const { page } = useContext(BooksContext)
-
-    const [index, setIndex] = useState([])
-
-    const [disablePrev, setDisablePrev] = useState(true)
-    const [disableNext, setDisableNext] = useState(false)
+    const [disable, setDisable] = useState({
+        prev: true, 
+        next: false, 
+        minus: true,
+        plus: false 
+    })
 
     useEffect(() => {
-        page === 1  ? setDisablePrev(true) : setDisablePrev(false)
+        page === 1 
+            ? setDisable(disable => ({...disable, prev: true}))
+            : setDisable(disable => ({...disable, prev: false}))
     }, [page])
 
-    useEffect(() => {totalPages <= page ? setDisableNext(true) : setDisableNext(false)}, [totalPages, page])   
+    useEffect(() => {
+        totalPages <= page 
+            ? setDisable(disable => ({...disable, next: true, plus: true})) 
+            : setDisable(disable => ({...disable, next: false, plus: false}))
+    }, [totalPages, page])
 
     useEffect(() => {
-        for (let page = 1; page <= totalPages; page++){
-            setIndex(index => [...index, page])
-        } 
-    }, [totalPages])
+        currentPagination === pagination[0]
+            ? setDisable(disable => ({...disable, minus: true}))
+            : setDisable(disable => ({...disable, minus: false}))
 
-    return {
-        index, 
-        disable: [disablePrev, disableNext]
+        currentPagination === pagination[pagination.length - 1] 
+            ? setDisable(disable => ({...disable, plus: true}))
+            : setDisable(disable => ({...disable, plus: false}))
+
+    }, [currentPagination, pagination])
+
+    return { 
+        disable,
+        currentPagination,
+        pagination, 
+        page
     }
 }
 

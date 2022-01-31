@@ -7,47 +7,75 @@ const buttonStyle = 'rounded-full text-center bg-black text-white w-8 h-8 m-2 du
 const Pagination = () => {
 
     const {
-        page, 
-        totalPages,
         setPage,
-        previousPage, 
+        previousPage,
         nextPage,
+        prevPagination,
+        nextPagination,
+        currentPagination,
     } = useContext(BooksContext)
 
-    const {index, disable} = usePagination(totalPages)
+    const { disable, pagination, page } = usePagination()
 
-    if (index.length === 1) return null
+    if (pagination[0]?.length === 1) {
+        return null
+    }
 
     return (
-        <div className='h-20 -mt-10 flex justify-center items-center'>
+        <div className='h-20 -mt-10 flex flex-wrap justify-center items-center'>
 
             <button
-                className={`${buttonStyle} ${disable[0] ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
+                className={`${buttonStyle} ${disable.minus ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
                 type='button'
-                onClick={previousPage}
-                disabled={disable[0]}
+                onClick={prevPagination}
+                disabled={disable.minus}
+            >
+                -
+            </button>
+
+            <button
+                className={`${buttonStyle} ${disable.prev ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
+                type='button'
+                onClick={() => {
+                    previousPage()
+                }}
+                disabled={disable.prev}
             >
                 {'<'}
             </button>
 
-            {index.map(position => (
+            {currentPagination?.map(indexPage => (
                 <button
-                    className={`${buttonStyle} ' hover:bg-green-900 ' ${position === page && 'bg-green-900'}`}
+                    className={`${buttonStyle} ' hover:bg-green-900 ' ${indexPage === Number(page) && 'bg-green-900'}`}
                     type='button'
-                    onClick={() => setPage(position)}
-                    key={position}
+                    onClick={() => {
+                        setPage(indexPage)
+                    }}
+                    key={indexPage}
                 >
-                    {position}
+                    {indexPage}
                 </button>
             ))}
 
+
             <button
-                className={`${buttonStyle} ${disable[1] ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
+                className={`${buttonStyle} ${disable.next ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
                 type='button'
-                onClick={nextPage}
-                disabled={disable[1]}
+                onClick={() => {
+                    nextPage()
+                }}
+                disabled={disable.next}
             >
                 {'>'}
+            </button>
+
+            <button
+                className={`${buttonStyle} ${disable.plus ? 'bg-gray-400 text-black hover:bg-red-400' : 'bg-black text-white hover:bg-green-900'}`}
+                type='button'
+                onClick={nextPagination}
+                disabled={disable.plus}
+            >
+                +
             </button>
         </div>
     );

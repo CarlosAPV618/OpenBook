@@ -36,7 +36,7 @@ const CategoriasAccordion = ({collection, headingStyle}) => {
             <Link
               // to={'/categories/'+cat.endpoint}
               onClick={() => {
-                setBooks(collection._id, cat._id)
+                setBooks(cat._id)
               }}
               className={linkStyles}
               key={cat._id}

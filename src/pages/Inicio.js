@@ -25,13 +25,16 @@ const Inicio = () => {
                 <>
                     {modal && <BookDetails />}
 
-                    <div className='p-8 mx-10 flex flex-wrap justify-evenly'>
-                        {books.map(book => (
-                            <Book book={book} key={book.uid}/>
-                        ))}
-                    </div>  
-
-                    <Pagination />
+                    {/* <div className='py-8 lg:grid gap-5 lg:grid-cols-5 md:grid-cols-3 flex flex-wrap justify-evenly'> */}
+                    <div className='flex flex-col'>
+                        <div className='p-8 flex flex-wrap justify-evenly gap-6'>
+                            {books?.map(book => (
+                                <Book book={book} key={book.uid}/>
+                            ))}
+                        </div>
+                                
+                        <Pagination />
+                    </div>
                 </>
             ) : (
                 <div className='text-center p-8 w-full font-thin text-xl'>
